@@ -71,6 +71,21 @@ public class ListView extends VerticalLayout {
     private void configureContactForm() {
         contactForm = new ContactForm(crmService.findAllCompanies(), crmService.findAllStatuses());
         contactForm.setWidth("25em");
+
+        contactForm.addSaveListener(e -> saveContact(e));
+        contactForm.addDeleteListener(e -> deleteContact(e));
+    }
+
+    private void deleteContact(ContactForm.DeleteEvent event) {
+        crmService.deleteContact(event.getContact());
+        updateContactList();
+        closeEditor();
+    }
+
+    private void saveContact(ContactForm.SaveEvent event) {
+        crmService.saveContact(event.getContact());
+        updateContactList();
+        closeEditor();
     }
 
     private Component getToolbar() {
@@ -84,13 +99,19 @@ public class ListView extends VerticalLayout {
             updateContactList();
         });
 
-        addButton = new Button("Filter");
+        addButton = new Button("Add contact");
+        addButton.addClickListener(e -> addContact());
 
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         horizontalLayout.add(filterField, addButton);
 
         return horizontalLayout;
+    }
+
+    private void addContact() {
+        contactGrid.asSingleSelect().clear();
+        editContact(new Contact());
     }
 
     private void configureContactGrid() {
