@@ -2,6 +2,7 @@ package com.example.application.views.list;
 
 import com.example.application.data.Contact;
 import com.example.application.services.CrmService;
+import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -13,19 +14,24 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.PermitAll;
+import org.springframework.context.annotation.Scope;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+@org.springframework.stereotype.Component
 @PageTitle("Contacts")
-@Route(value = "")
+@Scope("prototype")
+@Route(value = "", layout = MainLayout.class)
+@PermitAll
 public class ListView extends VerticalLayout {
     private H2 header;
     private TextField filterField;
     private Button addButton;
-    private Grid<Contact> contactGrid;
-    private ContactForm contactForm;
+    Grid<Contact> contactGrid;
+    ContactForm contactForm;
     private final CrmService crmService;
 
     public ListView(CrmService crmService) {
@@ -74,6 +80,7 @@ public class ListView extends VerticalLayout {
 
         contactForm.addSaveListener(e -> saveContact(e));
         contactForm.addDeleteListener(e -> deleteContact(e));
+        contactForm.addCloseListener(e -> closeEditor());
     }
 
     private void deleteContact(ContactForm.DeleteEvent event) {

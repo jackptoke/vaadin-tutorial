@@ -24,15 +24,15 @@ import java.util.List;
 @Slf4j
 public class ContactForm extends FormLayout {
     BeanValidationBinder<Contact> contactBinder = new BeanValidationBinder<>(Contact.class);
-    private TextField firstName = new TextField("First Name");
-    private TextField lastName = new TextField("Last Name");
-    private TextField email = new TextField("Email");
-    private ComboBox<Status> status = new ComboBox<>("Status");
-    private ComboBox<Company> company = new ComboBox<>("Company");
+    TextField firstName = new TextField("First Name");
+    TextField lastName = new TextField("Last Name");
+    TextField email = new TextField("Email");
+    ComboBox<Status> status = new ComboBox<>("Status");
+    ComboBox<Company> company = new ComboBox<>("Company");
 
-    private Button saveButton;
-    private Button deleteButton;
-    private Button cancelButton;
+    Button saveButton;
+    Button deleteButton;
+    Button cancelButton;
 
 
     public ContactForm(List<Company> companies, List<Status> statuses){
